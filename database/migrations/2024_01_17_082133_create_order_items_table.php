@@ -13,12 +13,16 @@ return new class extends Migration
     {
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
-            $table->double('price');
-            $table->integer('quantity');
+            // tao khoa ngoai
             $table->unsignedBigInteger('product_id');
-            $table->foreign('product_id')->references('id')->on('product');
+            $table->foreign('product_id')->references('id')->on('products');
+            // end tao khoa ngoai
+            // tao khoa ngoai
             $table->unsignedBigInteger('order_id');
             $table->foreign('order_id')->references('id')->on('orders');
+            // end tao khoa ngoai
+            $table->integer('quantity');
+            $table->double('price');
             $table->timestamps();
         });
     }

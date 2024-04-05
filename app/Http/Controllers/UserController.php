@@ -56,7 +56,8 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
   
-        User::findOrFail($id)->update($request);
+     
+        User::findOrFail($id)->update($request->all());
     }
 
     /**
@@ -64,6 +65,6 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        User::findOrFail($id)->destroy();
+        User::findOrFail($id)->destroy($id);
     }
 }

@@ -21,37 +21,10 @@ use App\Http\Controllers\UserController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
-
-route::get('/home', function () {
-    return 'hello word';
-})->middleware('CheckAge');
-route::get('/shop', function () {
-    return 'hello shop';
-});
-Route::get('/about', function () {
-    return 'hello about';
-});
-route::get('/contact', function () {
-    return 'hello contact';
+    return ('welcome');
 });
 
 
-Route::post('/post', function () {
-    echo ' method post';
-});
-Route::put('/put', function () {
-    return route('home');
-});
-
-
-route::get('post/{post}/comments/{comments}', function ($postId, $commentId) {
-    return "postId:$postId - commentsId: $commentId";
-});
-route::get('user/{name?}', function ($name = 'Joh') {
-    return $name;
-});
 
 
 Route::resource('users', UserController::class);
@@ -61,12 +34,17 @@ Route::resource('orders', OrderController::class);
 Route::resource('orderItems', OrderItemController::class);
 
 
+
+
+
 route::get('child', function(){
     return view('child');
 });
 
-route::group(['prefix' => 'Admin'], function(){
-    route::resource('users', App\Http\Controllers\Admin\UserController::class, ['names' =>'Admin.users.index']);
+route::group(['prefix' => 'admin'], function(){
+    route::resource('users', App\Http\Controllers\Admin\UserController::class, ['names' =>'Admin.users']);
+    route::resource('products', App\Http\Controllers\Admin\ProductController::class,['names'=>'Admin.products']);
 });
+// route::get('/search', [ProductController::class, 'search'])->name('products.search');
 
 

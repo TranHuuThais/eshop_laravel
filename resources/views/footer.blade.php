@@ -8,7 +8,7 @@
                     <p>Download App for android and ios mobile phone</p>
                     <div class="app-logo">
                         <img src="{{url('images/play-store.png')}}" alt="">
-                        <img src="{{url('image/images/app-store.png')}}" alt="">
+                        <img src="{{url('images/app-store.png')}}" alt="">
                     </div>
                 </div>
                 <div class="footer-col-2">

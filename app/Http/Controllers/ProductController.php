@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Throwable;
 
 class ProductController extends Controller
 {
@@ -56,7 +57,12 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        Product::findOrFail($id)->update($request);
+        // try {
+        //     // return $request->all();
+        //     Product::findOrFail($id)->update($request->all());
+        // } catch (\Throwable $th) {
+        //     dd($th);
+        // }
     }
 
     /**
@@ -64,6 +70,18 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        Product::findOrFail($id)->destroy();
+        Product::findOrFail($id)->destroy($id);
     }
+    public function search(Request $request)
+    {
+        // try {
+        //     $query = $request->input('search');
+        //     //    dd($query);
+        //     //để thực hiện một truy vấn đến cơ sở dữ liệu
+        //     $productSearch = Product::where('name', 'LIKE', "%$query%")->get();
+        //     return view('products.search', compact('productSearch'));
+        // } catch (Throwable $th) {
+        //     return $th;
+        // }
+}
 }

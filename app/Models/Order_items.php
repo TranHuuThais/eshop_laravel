@@ -9,6 +9,7 @@ class Order_items extends Model
 {
     use HasFactory;
     // model relationship 
+    protected $fillable =['quantity','price'];
     function product(){
         return $this->belongsTo(Product::class);
     }

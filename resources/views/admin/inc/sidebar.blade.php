@@ -20,7 +20,7 @@
                        
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="{{route('orders.index')}}" aria-expanded="false" aria-controls="auth">
+                        <a class="nav-link" data-toggle="collapse" href="{{route('Admin.orders.index')}}" aria-expanded="false" aria-controls="auth">
                             <i class="menu-icon typcn typcn-document-add"></i>
                             <span class="menu-title">Orders</span>
                             <i class="menu-arrow"></i>

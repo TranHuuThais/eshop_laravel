@@ -13,7 +13,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $productList = Product::all();
+        $productList = Product::paginate(8);
      return view('Products.index',['productList'=> $productList]);
     }
 
@@ -40,8 +40,8 @@ class ProductController extends Controller
 
     
     {
-        $product =product::findOrFail($id);
-        return view('Products.show',['product' => $product]);
+        $products =product::findOrFail($id);
+        return view('Products.show',['product' => $products]);
     }
 
     /**

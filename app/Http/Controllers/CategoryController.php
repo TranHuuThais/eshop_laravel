@@ -3,16 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class CategoryController extends ProductController
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        Category::all();
+        $categoryList = Category::all();
+        return view('home.showCategory', compact('categoryList'));
+      
     }
 
     /**
@@ -28,15 +31,20 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        return Category::create($request->all());
+        //
     }
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        return Category::findOrFail($id);
+    {  
+        // $category = Category::where('id', $id)->get();
+        // $products = $category->products;
+        // return view('home.showCategory', compact('category', 'products'));
+        $category = Category::where('id', $id)->first(); // Retrieve a single category
+        $products = $category->products; // Access products related to this category
+        return view('home.showCategory', compact('category', 'products'));
     }
 
     /**
@@ -44,7 +52,7 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        
+        //
     }
 
     /**
@@ -52,7 +60,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-       Category::findOrFail($id)->update($request);
+        //
     }
 
     /**
@@ -60,6 +68,6 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-       Category::findOrFail($id)->destroy();
+        //
     }
 }

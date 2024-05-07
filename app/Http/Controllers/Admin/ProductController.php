@@ -13,19 +13,18 @@ class ProductController extends Controller
      */
     public function index()
     {
-       $productList = Product::all();
-       return view('Admin.products.index',['productList' => $productList]);
-
+        $productList = Product::all();
+        return view('Admin.products.index', ['productList' => $productList]);
     }
-      
-    
+
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view( 'Admin.products.create');
+        return view('Admin.products.create');
     }
 
     /**
@@ -33,23 +32,23 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-      
+
         $product = Product::create([
             'img' => $request->input('img'), // Ensure 'name' is included
             'name' => $request->input('name'), // Ensure 'name' is included
-           
+
             'description' => $request->input('description'),
 
             'price' => $request->input('price'),
             'quantity' => $request->input('quantity'),
         ]);
-    
+
         $message = $product ? "Successfully created" : "Creation failed";
-    
+
         return redirect()->route("Admin.products.index", ["id" => $product->id])->with("message", $message);
     }
-    
-    
+
+
 
     /**
      * Display the specified resource.
@@ -64,7 +63,7 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product =Product::findOrFail($id);
+        $product = Product::findOrFail($id);
         return view('Admin.products.edit', compact('product'));
     }
 
@@ -73,14 +72,13 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $product =Product::findOrFail($id);
-        $boll=   $product->update($request->only(['img','name','description','price','quantity']));
-           $Message = "Successfully update message.";
-           if(  !$boll){
-                $Message = "Failed to update message.";
-          
-           }
-           return redirect()->route('Admin.products.index')->with(['message' => $Message]);    ;
+        $product = Product::findOrFail($id);
+        $boll =   $product->update($request->only(['img', 'name', 'description', 'price', 'quantity']));
+        $Message = "Successfully update message.";
+        if (!$boll) {
+            $Message = "Failed to update message.";
+        }
+        return redirect()->route('Admin.products.index')->with(['message' => $Message]);;
     }
 
     /**
@@ -89,10 +87,9 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         $Message = "Success deleted ";
-        if(!Product::destroy($id)){
-             $Message = "Failed to delete ";
-       
+        if (!Product::destroy($id)) {
+            $Message = "Failed to delete ";
         }
-        return redirect()->route('Admin.products.index')->with(['message' => $Message]);    
+        return redirect()->route('Admin.products.index')->with(['message' => $Message]);
     }
 }

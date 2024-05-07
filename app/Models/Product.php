@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+
     // model relationship 
     protected $fillable =['img','name','description','price','quantity','category_id'];
     function category(){
@@ -16,4 +17,6 @@ class Product extends Model
     function orderItems(){
         return $this->hasMany(Order_Items::class);
     }
+
+
 }

@@ -24,7 +24,7 @@
                     <tbody>
                         @foreach($productList as $product)
                         <tr>
-                            <td class=" text-black text-wrap text-justify text-lowercase">{{$product ->img}}</td>
+                            <td class=" text-black text-wrap text-justify text-lowercase"><img src="{{$product ->img}}" alt="" srcset=""></td>
                             <td>{{$product->name}}</td>
                             <td class=" text-black text-wrap text-justify text-lowercase">{{$product->description}} <i class="mdi mdi-arrow-down"></i>
                             </td>

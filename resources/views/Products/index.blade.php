@@ -4,33 +4,85 @@
 
 @section('content')
 
-<!-- Navbar Start -->
-
-<!-- Navbar End -->
-
-
 <!-- Shop Start -->
 <div class="container-fluid pt-5">
     <div class="row px-xl-5">
         <!-- Shop Sidebar Start -->
         <div class="col-lg-3 col-md-12">
             <!-- Price Start -->
-            <div class="border-bottom mb-4 pb-4">
-                <h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
-                <form>
-                    @foreach($categoryList as $category)
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price-1">
-                        <label class="custom-control-label" for="price-1">{{$category->price}}</label>
-                        <span class="badge border font-weight-normal">150</span>
+            <form action="" method="get" id="priceFilterForm">
+                <div class="form-group">
+                    <label>Filter by price:</label><br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="price" id="priceShowAll" value="all" {{ old('price') == 'all' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="priceShowAll">Show All</label>
+                            </div>
+                        </div>
                     </div>
-                    @endforeach
-                </form>
-            </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="price" id="price0-5" value="0-5" {{ old('price') == '0-5' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="price0-5">$0 - $5</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="price" id="price5-10" value="5-10" {{ old('price') == '5-10' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="price5-10">$5 - $10</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="price" id="price10-15" value="10-15" {{ old('price') == '10-15' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="price10-15">$10 - $15</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="price" id="price15-20" value="15-20" {{ old('price') == '15-20' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="price15-20">$15 - $20</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="price" id="price20-25" value="20-25" {{ old('price') == '20-25' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="price20-25">$20 - $25</label>
+                            </div>
+                        </div>
+                        <!-- Add other price ranges if needed -->
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Apply</button>
+            </form>
+            <script>
+                // Lấy phần tử select theo id
+                var selectElement = document.getElementById('price');
+
+                // Lấy giá trị đã chọn từ local storage
+                var selectedValue = localStorage.getItem('selectedPrice');
+
+                // Nếu đã chọn giá trị trước đó, thiết lập lại giá trị đã chọn
+                if (selectedValue) {
+                    selectElement.value = selectedValue;
+                }
+
+                // Lắng nghe sự kiện khi thay đổi giá trị của select
+                selectElement.addEventListener('change', function() {
+                    // Lưu giá trị mới vào local storage
+                    localStorage.setItem('selectedPrice', this.value);
+                });
+            </script>
             <!-- Price End -->
 
             <!-- Color Start -->
-            <div class="border-bottom mb-4 pb-4">
+            <!-- <div class="border-bottom mb-4 pb-4">
                 <h5 class="font-weight-semi-bold mb-4">Filter by color</h5>
                 <form>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
@@ -64,11 +116,11 @@
                         <span class="badge border font-weight-normal">168</span>
                     </div>
                 </form>
-            </div>
+            </div> -->
             <!-- Color End -->
 
             <!-- Size Start -->
-            <div class="mb-5">
+            <!-- <div class="mb-5">
                 <h5 class="font-weight-semi-bold mb-4">Filter by size</h5>
                 <form>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
@@ -102,12 +154,10 @@
                         <span class="badge border font-weight-normal">168</span>
                     </div>
                 </form>
-            </div>
+            </div> -->
             <!-- Size End -->
         </div>
         <!-- Shop Sidebar End -->
-
-
         <!-- Shop Product Start -->
         <div class="col-lg-9 col-md-12">
             <div class="row pb-3">
@@ -156,13 +206,12 @@
                     </div>
                 </div>
                 @endforeach
-
             </div>
         </div>
         <!-- Shop Product End -->
     </div>
-      <!-- Pagination links -->
-      <div class="pagination-links">
+    <!-- Pagination links -->
+    <div class="pagination-links">
         {{ $productList->links() }}
     </div>
 </div>

@@ -24,9 +24,10 @@
     <div class="container-scroller">
         @include('admin.inc.navbar')
         <!-- partial:partials/_navbar.html -->
+        
         <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-                <a class="navbar-brand brand-logo" href="index.html">
+                <a class="navbar-brand brand-logo" href="{{route('Admin.home.index')}}">
                     <img src="{{url('assets/images/logo.svg')}}" alt="logo" /> </a>
                 <a class="navbar-brand brand-logo-mini" href="index.html">
                     <img src="{{url('assets/images/logo-mini.svg')}}" alt="logo" /> </a>
@@ -183,14 +184,7 @@
                 <div class="content-wrapper">
                     @yield('content')
                 </div>
-                <!-- content-wrapper ends -->
-                <!-- partial:partials/_footer.html -->
-                <footer class="footer">
-                    <div class="container-fluid clearfix">
-                        <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
-                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
-                    </div>
-                </footer>
+             
                 <!-- partial -->
             </div>
             <!-- main-panel ends -->

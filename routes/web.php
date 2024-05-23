@@ -9,7 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\CartController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,27 +21,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 Route::resource('users', UserController::class);
 Route::resource('categories', CategoryController::class);
 Route::resource('products', ProductController::class);
 Route::resource('orders', OrderController::class);
 Route::resource('orderItems', OrderItemController::class);
  
-Route::resource('home', HomeController::class);
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/search', 'App\Http\Controllers\SearchController@index')->name('home.search');
 // Route::get('/categories/{id}',  [CategoryController::class, 'showById'])->name('home.showCategory');
 // Route::get('/categories/{id}',  [CategoryController::class, 'showById'])->name('home.showCategory');
-Route::get('/categories/{category_id}', [CategoryShowController::class, 'index'])->name('home.showCategory');
-
+Route::get('/categories/{category_id}', [CategoryShowController::class, 'index'])->name('home.category');
+// addToCart
+Route::get('show-cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
+Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.delete');
+Route::put('/cart/{id}', [CartController::class, 'update'])->name('cart.update');
+Route::get('/cart/item_count', 'CartController@getItemCount')->name('cart.item_count');
 
 
 
 
 
 route::group(['prefix' => 'admin'], function(){
+    route::resource('home', App\Http\Controllers\Admin\HomeController::class, ['names' =>'Admin.home']);
     route::resource('users', App\Http\Controllers\Admin\UserController::class, ['names' =>'Admin.users']);
     route::resource('products', App\Http\Controllers\Admin\ProductController::class,['names'=>'Admin.products']);
     route::resource('orders', App\Http\Controllers\Admin\OrderController::class,['names'=>'Admin.orders']);

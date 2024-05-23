@@ -11,12 +11,34 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $productList = Product::paginate(8);
-     return view('Products.index',['productList'=> $productList]);
+        $query = Product::query();
+        
+        // Lọc theo mức giá nếu được chọn
+        if ($request->has('price')) {
+            // Phân tách mức giá thành hai phần: min và max
+            $price = explode('-', $request->price);
+            
+            // Lọc các sản phẩm trong phạm vi từ min đến max
+            if (count($price) == 2) {
+                $query->whereBetween('price', [$price[0], $price[1]]);
+            } elseif ($price[0] > 0) {
+                $query->where('price', '>=', $price[0]);
+            }
+        }
+    
+        // Sắp xếp sản phẩm
+        if ($request->has('sort')) {
+            $query->orderBy('price', $request->sort);
+        }
+    
+        $productList = $query->paginate(8);
+        
+        return view('Products.index', ['productList' => $productList]);
     }
-
+    
+    
     /**
      * Show the form for creating a new resource.
      */

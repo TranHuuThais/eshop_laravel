@@ -9266,7 +9266,7 @@ button.bg-dark:focus {
 }
 
 .text-primary {
-  color: #D19C97 !important;
+  color: #138496 !important;
 }
 
 a.text-primary:hover, a.text-primary:focus {
@@ -9641,4 +9641,15 @@ svg {
   overflow: hidden;
   vertical-align: middle;
   display: none;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-check-label {
+  margin-left: 10px;
+}
+
+.btn-primary {
+  margin-top: 20px;
 }

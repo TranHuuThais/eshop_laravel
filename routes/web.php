@@ -10,6 +10,8 @@ use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
+use App\Http\Middleware\Admin;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,8 +50,12 @@ route::group(['prefix' => 'admin'], function(){
     route::resource('users', App\Http\Controllers\Admin\UserController::class, ['names' =>'Admin.users']);
     route::resource('products', App\Http\Controllers\Admin\ProductController::class,['names'=>'Admin.products']);
     route::resource('orders', App\Http\Controllers\Admin\OrderController::class,['names'=>'Admin.orders']);
+    route::resource('orderItems', App\Http\Controllers\Admin\OrderItemController::class,['names'=>'Admin.orderItems']);
+    Route::resource('categories', App\Http\Controllers\admin\CategoryController::class, ['names' => 'Admin.categories']);
 });
+// route::get('/admin', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('Admin.home');
 
+Route::middleware('auth')->get('/admin', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('Admin.home');
 
 
 Route::get('/dashboard', function () {

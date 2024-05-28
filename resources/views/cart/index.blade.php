@@ -15,7 +15,6 @@
 </div>
 
 <!-- Cart Start -->
-
 <div class="container-fluid pt-5">
     <div class="row px-xl-5">
         <div class="col-lg-8 table-responsive mb-5">
@@ -26,30 +25,28 @@
                         <th>Price</th>
                         <th>Total</th>
                         <th>Quantity</th>
-                        <th>update</th>
+                        <th>Update</th>
                         <th>Remove</th>
-                       
                     </tr>
                 </thead>
                 <tbody class="align-middle">
                     @php
-                    $totalAmount = 0; // Biến để lưu tổng số tiền
+                    $totalAmount = 0;
                     @endphp
                     @foreach($cart as $key => $item)
                     <tr>
                         <td class="align-middle">
-                            <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" style="width: 50px;"> {{ $item['name'] }}
+                            <img src="{{ url($item['img'] ?? 'path/to/default-image.jpg') }}" alt="{{ $item['name'] }}" style="width: 50px;">
+                            {{ $item['name'] }}
                         </td>
                         <td class="align-middle">${{ $item['price'] }}</td>
                         <td class="align-middle">${{ $item['price'] * $item['quantity'] }}</td>
-                        
                         <td class="align-middle">
                             <form action="{{ route('cart.update', ['id' => $key]) }}" method="POST" class="update-form">
                                 @csrf
                                 @method('PUT')
                                 <div class="input-group">
                                     <input type="number" class="form-control form-control-sm bg-secondary text-center" name="quantity" value="{{ $item['quantity'] }}">
-
                                 </div>
                             </form>
                         </td>
@@ -63,15 +60,9 @@
                                 <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-times"></i></button>
                             </form>
                         </td>
-                       
-                       
-                        
-
                     </tr>
                     @php
-                    // Tính tổng số tiền của từng sản phẩm
-                    $productTotalAmount = $item['price'] * $item['quantity'];
-                    $totalAmount += $productTotalAmount; // Thêm vào tổng số tiền của đơn hàng
+                    $totalAmount += $item['price'] * $item['quantity'];
                     @endphp
                     @endforeach
                 </tbody>
@@ -85,7 +76,7 @@
                 <div class="card-footer border-secondary bg-transparent">
                     <div class="d-flex justify-content-between mt-2">
                         <h5 class="font-weight-bold">Total</h5>
-                        <h5 class="font-weight-bold">${{ $totalAmount }}</h5> <!-- Hiển thị tổng số tiền -->
+                        <h5 class="font-weight-bold">${{ $totalAmount }}</h5>
                     </div>
                     <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
                 </div>
@@ -94,15 +85,13 @@
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                        <script>
-                            $(document).ready(function() {
-                                $('.update-btn').click(function() {
-                                    // Tìm form cập nhật số lượng sản phẩm gần nhất trong cùng một hàng
-                                    var form = $(this).closest('td').prev('td').find('.update-form');
-                                    // Gửi form đi
-                                    form.submit();
-                                });
-                            });
-                        </script>
+<script>
+    $(document).ready(function() {
+        $('.update-btn').click(function() {
+            var form = $(this).closest('td').prev('td').find('.update-form');
+            form.submit();
+        });
+    });
+</script>
 <!-- Cart End -->
 @endsection

@@ -161,15 +161,15 @@
         <!-- Shop Product Start -->
         <div class="col-lg-9 col-md-12">
             <div class="row pb-3">
+                @if(isset($productSearch))
+                @foreach($productSearch as $product)
                 <div class="col-12 pb-1">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <form action="">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search by name">
+                        <form action="{{ route('products.search') }}" method="GET">
+                            <div class="input-group mb-3">
+                                <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ request('search') }}">
                                 <div class="input-group-append">
-                                    <span class="input-group-text bg-transparent text-primary">
-                                        <i class="fa fa-search"></i>
-                                    </span>
+                                    <button class="btn btn-outline-secondary" type="submit">Search</button>
                                 </div>
                             </div>
                         </form>
@@ -185,6 +185,8 @@
                         </div>
                     </div>
                 </div>
+                @endforeach
+                @endif <!-- Close the if statement -->
                 @foreach($productList as $Products)
                 <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                     <div class="card product-item border-0 mb-4">
@@ -195,19 +197,23 @@
                             <h6 class="text-truncate mb-3">{{($Products->name)}}</h6>
                             <div class="d-flex justify-content-center">
                                 <h6>{{($Products->price)}}$</h6>
-
-
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between bg-light border">
                             <a href="{{route('products.show', $Products ->id)}}" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                            <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                            <form id="addToCartForm" method="POST" action="{{ route('cart.add') }}">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $Products->id }}">
+                                <input id="hiddenQuantity" type="hidden" name="quantity" value="1">
+                                <button class="btn btn-sm text-dark p-0" type="submit"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</button>
+                            </form>
                         </div>
                     </div>
                 </div>
                 @endforeach
             </div>
         </div>
+
         <!-- Shop Product End -->
     </div>
     <!-- Pagination links -->

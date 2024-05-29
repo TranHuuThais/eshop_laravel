@@ -49,13 +49,11 @@
             </form>
         </div>
         <div class="col-lg-3 col-6 text-right">
-            <a href="" class="btn border">
+            <!-- <a href="" class="btn border">
                 <i class="fas fa-heart text-primary"></i>
-                <span class="badge">0</span>
-            </a>
-            <a href="" class="btn border">
+            </a> -->
+            <a href="{{route('cart.index')}}" class="btn border">
                 <i class="fas fa-shopping-cart text-primary"></i>
-                <span class="badge">0</span>
             </a>
         </div>
     </div>
@@ -93,11 +91,11 @@
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="cart.html" class="dropdown-item">Shopping Cart</a>
-                                <a href="checkout.html" class="dropdown-item">Checkout</a>
+                                <a href="{{route('cart.index')}}" class="dropdown-item">Shopping Cart</a>
+                                <a href="{{route('home.checkout')}}" class="dropdown-item">Checkout</a>
                             </div>
                         </div>
-                        <a href="contact.html" class="nav-item nav-link">Contact</a>
+                        <a href="{{route('home.contact')}}" class="nav-item nav-link">Contact</a>
                     </div>
                     <div class="navbar-nav ml-auto py-0">
                         <a href="" class="nav-item nav-link">Login</a>

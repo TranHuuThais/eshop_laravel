@@ -10,6 +10,7 @@ use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Middleware\Admin;
 
 /*
@@ -31,9 +32,12 @@ Route::resource('orderItems', OrderItemController::class);
  
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 Route::get('/search', 'App\Http\Controllers\SearchController@index')->name('home.search');
+Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
 // Route::get('/categories/{id}',  [CategoryController::class, 'showById'])->name('home.showCategory');
 // Route::get('/categories/{id}',  [CategoryController::class, 'showById'])->name('home.showCategory');
 Route::get('/categories/{category_id}', [CategoryShowController::class, 'index'])->name('home.category');
+Route::get('/products/search', 'ProductController@search')->name('products.search');
+
 // addToCart
 Route::get('show-cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
@@ -41,7 +45,9 @@ Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.dele
 Route::put('/cart/{id}', [CartController::class, 'update'])->name('cart.update');
 Route::get('/cart/item_count', 'CartController@getItemCount')->name('cart.item_count');
 
-
+// Checkout routes
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('home.checkout');
+Route::post('/checkout/place-order', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
 
 
 

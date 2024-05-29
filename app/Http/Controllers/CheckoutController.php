@@ -31,6 +31,7 @@ class CheckoutController extends Controller
         $orders = new Order();
         $orders->user_id = Auth::id(); // Giả sử bạn đã cấu hình xác thực
         $orders->code = $request->input('code');
+        $orders->total = $this->calculateCartTotal();
         $orders->status = $request->input('status'); // Lấy dữ liệu của trường 'status' từ yêu cầu
         // Thêm nhiều trường nếu cần
 
@@ -69,5 +70,16 @@ class CheckoutController extends Controller
         }
     }
 
+    private function calculateCartTotal()
+    {
+        $total = 0;
 
+        if (session('cart')) {
+            foreach (session('cart') as $item) {
+                $total += $item['price'] * $item['quantity'];
+            }
+        }
+
+        return $total;
+    }
 }

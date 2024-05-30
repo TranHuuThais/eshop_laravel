@@ -2,49 +2,52 @@
 
 @section('content')
 <div class="row">
-    <div class="col-lg6"> <a href="{{route('Admin.products.create')}}" class="btn-default"> Create a New Products</a></div>
+    <div class="col-lg-6">
+        <a href="{{ route('Admin.products.create') }}" class="btn btn-default">Create a New Product</a>
+    </div>
 
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Table</h4>
-                <p class="card-description"> Add class <code>.table-hover</code> </p>
-                <table class="table table-hover ">
+                <h4 class="card-title">Products Table</h4>
+                <p class="card-description">Add class <code>.table-hover</code></p>
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>Img</th>
                             <th>Name</th>
                             <th>Description</th>
-                            <th>price</th>
+                            <th>Price</th>
                             <th>Quantity</th>
+                            <th>Category</th>
                             <th>Edit</th>
-                            <th>Update</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($productList as $product)
                         <tr>
-                            <td class=" text-black text-wrap text-justify text-lowercase"><img src="{{$product ->img}}" alt="" srcset=""></td>
-                            <td>{{$product->name}}</td>
-                            <td class=" text-black text-wrap text-justify text-lowercase">{{$product->description}} <i class="mdi mdi-arrow-down"></i>
-                            </td>
-                            <td>{{$product->price}}</td>
-                            <td>{{$product->quantity}}</td>
+                            <td><img src="{{ Storage::url($product->img) }}" alt="" class="img-fluid" style="max-width: 100px;"></td>
+                            <td>{{ Str::limit($product->name, 50) }}</td> <!-- Limit name to 50 characters -->
+                            <td>{{ Str::limit($product->description, 100) }}</td> <!-- Limit description to 100 characters -->
+                            <td>{{ $product->price }}</td>
+                            <td>{{ $product->quantity }}</td>
+                            <td>{{ optional($product->category)->name }}</td>
                             <td>
-                                <a class="badge badge-danger" href="{{route('Admin.products.edit',$product ->id)}}"> Edit</a>
+                                <a class="badge badge-danger" href="{{ route('Admin.products.edit', $product->id) }}">Edit</a>
                             </td>
                             <td>
-                                <form action="{{route('Admin.products.destroy',$product ->id)}}" method="post">
-                                    {{csrf_field()}}
-
-                                    {{method_field('DELETE')}}
-                                    <button type="submit">Delete</button>
+                                <form action="{{ route('Admin.products.destroy', $product->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                 </form>
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
+                {{ $productList->links() }} <!-- Added pagination links -->
             </div>
         </div>
     </div>

@@ -29,7 +29,7 @@
             <div class="card product-item border-0 mb-4">
                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                     <!-- Display product image -->
-                    <img class="img-fluid w-100" src="{{url($product->img)}}" alt="{{ $product->name }}">
+                    <img class="img-fluid w-100" src="{{Storage::url($product->img)}}" alt="{{ $product->name }}">
                 </div>
                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                     <!-- Display product name -->

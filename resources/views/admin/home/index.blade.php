@@ -142,6 +142,7 @@
                     <a class="nav-link text-secondary" href="#">Contact</a>
                 </li>
             </ul>
+            
         </footer>
 
     </div>

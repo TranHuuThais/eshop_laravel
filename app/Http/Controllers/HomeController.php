@@ -12,17 +12,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $productListHome = Product::paginate(8);
-        return view('home.index',['productList'=> $productListHome]);
+        $productListHome = Product::orderBy('created_at', 'desc')->paginate(8);
+        return view('home.index', ['productList' => $productListHome]);
     }
 
-  
-  //contact
-  public function contact()
-  {
-      //
-      return view('home.contact');
-  }
 
- 
+    //contact
+    public function contact()
+    {
+        //
+        return view('home.contact');
+    }
 }

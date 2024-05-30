@@ -13,7 +13,6 @@ class Controller extends BaseController
     {
         $categoryList =Category::all(); 
         view()->share('categoryList', $categoryList);
-        $this->middleware('auth');
 
     }                                                                                                                                                       
 }

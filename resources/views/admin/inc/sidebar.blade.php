@@ -62,9 +62,9 @@
                       <span class="ml-2">Category</span>
                   </a>
               </li>
-           
-            
-           
+
+
+
               <li class="nav-item">
                   <a class="btn btn-sm btn-secondary ml-3 mt-2" href="https://themesberg.com/blog/bootstrap/simple-bootstrap-5-dashboard-tutorial">
                       <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-book" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -78,7 +78,15 @@
                       ⚡︎ Volt Dashboard
                   </a>
               </li>
-            
+
           </ul>
       </div>
+      <form method="POST" action="{{ route('logout') }}">
+          @csrf
+
+          <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+              {{ __('Log Out') }}
+          </x-dropdown-link>
+      </form>
   </nav>

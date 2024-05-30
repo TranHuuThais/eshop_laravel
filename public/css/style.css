@@ -9653,3 +9653,56 @@ svg {
 .btn-primary {
   margin-top: 20px;
 }
+
+
+.pagination-horizontal {
+  text-align: center; /* Canh giữa các nút pagination */
+  margin-top: 20px; /* Khoảng cách giữa pagination và phần content khác */
+}
+
+.pagination-links {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination-links li {
+  display: inline-block;
+  margin-right: 5px; /* Khoảng cách giữa các nút pagination */
+}
+
+.pagination-links li a {
+  color: #333;
+  padding: 5px 10px; /* Điều chỉnh kích thước của các nút */
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  text-decoration: none;
+}
+
+.pagination-links li.active a {
+  background-color: #007bff; /* Màu nền cho nút pagination đang active */
+  color: #fff;
+  border-color: #007bff;
+}
+
+.pagination-links li.disabled {
+  color: #ccc; /* Màu chữ của nút pagination bị vô hiệu */
+}
+
+.pagination-links li.disabled a {
+  pointer-events: none; /* Không cho phép click vào nút pagination bị vô hiệu */
+  cursor: not-allowed; /* Đổi con trỏ khi hover vào nút bị vô hiệu */
+}
+
+/* Liên kết phân trang */
+.pagination-links {
+  display: inline-block;
+  white-space: nowrap; /* Đảm bảo các liên kết không bị ngắt dòng */
+}
+
+.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+  margin-left: -200px;
+  display: none;
+  
+}

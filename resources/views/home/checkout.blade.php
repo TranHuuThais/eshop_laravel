@@ -15,6 +15,7 @@
     </div>
 </div>
 <!-- Page Header End -->
+
 @if(session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
@@ -26,6 +27,7 @@
         {{ session('error') }}
     </div>
 @endif
+
 <div class="container-fluid pt-5">
     <div class="row px-xl-5">
         <div class="col-lg-8">
@@ -36,67 +38,39 @@
                     <div class="row">
                         <div class="col-md-6 form-group">
                             <label>Name</label>
-                            <input class="form-control" type="text" name="name" value="{{ $user->name }}">
+                            <input class="form-control" type="text" name="name" value="{{ old('name') }}">
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Address</label>
-                            <input class="form-control" type="text" name="address" placeholder="Address">
+                            <input class="form-control" type="text" name="address" placeholder="Address" value="{{ old('address') }}">
                         </div>
-
                         <div class="col-md-6 form-group">
                             <label>E-mail</label>
-                            <input class="form-control" type="text" name="email" value="{{ $user->email }}">
+                            <input class="form-control" type="text" name="email" value="{{ old('email') }}">
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Status</label>
-                            <input class="form-control" type="text" name="status" placeholder="Status">
+                            <input class="form-control" type="text" name="status" placeholder="Status" value="{{ old('status') }}">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Phone</label>
+                            <input class="form-control" type="number" name="phone" placeholder="phone" value="{{ old('phone') }}">
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Code</label>
-                            <input class="form-control" type="text" name="code" placeholder="Code">
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label>Mobile No</label>
-                            <input class="form-control" type="text" name="phone" placeholder="+123 456 789">
-                        </div>
-
-
-                        <div class="col-md-12 form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="shipto">
-                                <label class="custom-control-label" for="shipto" data-toggle="collapse" data-target="#shipping-address">Ship to different address</label>
-                            </div>
+                            <input class="form-control" type="text" name="code" placeholder="Code" value="{{ old('code') }}">
                         </div>
                     </div>
                 </div>
 
                 <div class="card border-secondary mb-5">
                     <div class="card-header bg-secondary border-0">
-                        <h4 class="font-weight-semi-bold m-0">Payment</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="payment_method" id="paypal" value="Paypal">
-                                <label class="custom-control-label" for="paypal">Paypal</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="payment_method" id="directcheck" value="Direct Check">
-                                <label class="custom-control-label" for="directcheck">Direct Check</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="payment_method" id="banktransfer" value="Bank Transfer">
-                                <label class="custom-control-label" for="banktransfer">Bank Transfer</label>
-                            </div>
-                        </div>
-                    </div>
                     <div class="card-footer border-secondary bg-transparent">
                         <button type="submit" class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Place Order</button>
                     </div>
+                    </div>
+                   
+                  
                 </div>
             </form>
         </div>
@@ -129,10 +103,7 @@
                         <h6 class="font-weight-medium">Subtotal</h6>
                         <h6 class="font-weight-medium">${{ $total }}</h6>
                     </div>
-                    <div class="d-flex justify-content-between">
-                        <h6 class="font-weight-medium">Shipping</h6>
-                        <h6 class="font-weight-medium">$10</h6>
-                    </div>
+                  
                     <hr>
                     <div class="d-flex justify-content-between mb-3 pt-1">
                         <h6 class="font-weight-bold">Total</h6>
@@ -144,4 +115,3 @@
     </div>
 </div>
 @endsection
-

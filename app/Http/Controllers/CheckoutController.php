@@ -7,14 +7,12 @@ use App\Models\Order_items;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
 class CheckoutController extends Controller
 {
     // Hiển thị trang thanh toán
     public function index()
     {
-        // Giả sử bạn có logic để lấy và tính tổng trong phương thức index của bạn
-        $total = 0; // Tính tổng ở đây nếu cần
+        $total = $this->calculateCartTotal(); // Tính tổng ở đây nếu cần
         $user = Auth::user();
         return view('home.checkout', compact('total', 'user'));
     }
@@ -22,64 +20,69 @@ class CheckoutController extends Controller
     // Xử lý yêu cầu đặt hàng
     public function placeOrder(Request $request)
     {
-        // Validate dữ liệu yêu cầu
         $validatedData = $request->validate([
-            // Xác định các quy tắc xác thực cho dữ liệu đơn hàng
+            'name' => 'required|string|max:255', // Add required validation for the name field
+            'address' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'status' => 'required|string|max:255',
+            'phone' => 'required|string|max:15',
+            'code' => 'required|string|max:50',
+        ], [
+            'name.required' => 'Vui lòng nhập tên của bạn.', // Custom error message for the name field
+            'email.required' => 'Vui lòng nhập email của bạn.', // Custom error message for the name field
         ]);
 
-        // Tạo một thể hiện đơn hàng mới
-        $orders = new Order();
-        $orders->user_id = Auth::id(); // Giả sử bạn đã cấu hình xác thực
-        $orders->code = $request->input('code');
-        $orders->total = $this->calculateCartTotal();
-        $orders->status = $request->input('status'); // Lấy dữ liệu của trường 'status' từ yêu cầu
-        // Thêm nhiều trường nếu cần
+        // Kiểm tra người dùng đã đăng nhập
+        if (Auth::check()) {
+            // Tạo một thể hiện đơn hàng mới
+            $orders = new Order();
+            $orders->user_id = Auth::id();
+            $orders->code = $request->input('code');
+            $orders->email = $request->input('email');
+            $orders->phone = $request->input('phone');
+            $orders->total = $this->calculateCartTotal();
+            $orders->status = $request->input('status');
+            // Thêm nhiều trường nếu cần
 
-        // Lưu đơn hàng vào cơ sở dữ liệu
-        $orders->save();
+            // Lưu đơn hàng vào cơ sở dữ liệu
+            $orders->save();
 
-        // Kiểm tra xem phiên 'cart' có tồn tại và không trống không
-        if ($request->session()->has('cart') && !empty($request->session()->get('cart'))) {
-            // Bây giờ, lặp qua các mục trong giỏ hàng và lưu chúng như các mục đơn hàng
-            foreach ($request->session()->get('cart') as $item) {
-                // Kiểm tra xem khóa 'product_id' có tồn tại trong mảng $item không
-                if (is_array($item) && isset($item['product_id'])) {
-                    $orderItem = new Order_items(); // Tên mô hình đã cập nhật
-                    $orderItem->order_id = $orders->id; // Gán ID đơn hàng cho mục đơn hàng
-                    $orderItem->product_id = $item['product_id']; // Truy cập vào khóa 'product_id'
-                    $orderItem->quantity = $item['quantity'];
-                    $orderItem->price = $item['price'];
-                    // Thêm nhiều trường nếu cần
-                    $orderItem->save();
-                } else {
-                    // Xử lý trường hợp khóa 'product_id' không tồn tại
-                    // Điều này có thể là ghi log lỗi hoặc bỏ qua mục này
-                    // Bạn cũng có thể muốn thêm xử lý lỗi cho các khóa bắt buộc khác
-                    // Ví dụ: 'quantity', 'price', v.v.
+            // Kiểm tra xem phiên 'cart' có tồn tại và không trống không
+            if ($request->session()->has('cart') && !empty($request->session()->get('cart'))) {
+                // Lặp qua các mục trong giỏ hàng và lưu chúng như các mục đơn hàng
+                foreach ($request->session()->get('cart') as $item) {
+                    if (is_array($item) && isset($item['product_id'])) {
+                        $orderItem = new Order_items();
+                        $orderItem->order_id = $orders->id;
+                        $orderItem->product_id = $item['product_id'];
+                        $orderItem->quantity = $item['quantity'];
+                        $orderItem->price = $item['price'];
+                        $orderItem->save();
+                    } else {
+                        // Xử lý trường hợp khóa 'product_id' không tồn tại
+                    }
                 }
-            }
-            // Xóa phiên giỏ hàng sau khi đặt hàng
-            $request->session()->forget('cart');
+                // Xóa phiên giỏ hàng sau khi đặt hàng
+                $request->session()->forget('cart');
 
-            // Chuyển hướng người dùng sau khi đặt hàng thành công
-            return redirect()->route('home.checkout')->with('success', 'Đặt hàng thành công!');
+                // Chuyển hướng người dùng sau khi đặt hàng thành công
+                return redirect()->route('home.checkout')->with('success', 'Đặt hàng thành công!');
+            } else {
+                return redirect()->route('home.checkout')->with('error', 'Không có sản phẩm trong giỏ hàng.');
+            }
         } else {
-            // Xử lý trường hợp phiên 'cart' trống hoặc không được đặt
-            // Bạn có thể muốn chuyển hướng người dùng trở lại trang thanh toán với thông báo lỗi
-            return redirect()->route('home.checkout')->with('error', 'Không có sản phẩm trong giỏ hàng.');
+            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để đặt hàng.');
         }
     }
 
     private function calculateCartTotal()
     {
         $total = 0;
-
         if (session('cart')) {
             foreach (session('cart') as $item) {
                 $total += $item['price'] * $item['quantity'];
             }
         }
-
         return $total;
     }
 }

@@ -11,7 +11,7 @@
             <div id="product-carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner border">
                     <div class="carousel-item active">
-                        <img class="w-100 h-100" src="{{ url($product->img)}}" alt="Image">
+                        <img class="w-100 h-100" src="{{ Storage::url($product->img)}}" alt="Image">
                     </div>
                 </div>
             </div>
@@ -56,22 +56,28 @@
                     </div>
                 </form>
             </div>
+
             <div class="d-flex align-items-center mb-4 pt-2">
-                <div class="input-group quantity mr-3" style="width: 130px;">
-                    <div class="input-group-btn">
-                        <button class="btn btn-primary btn-minus">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                    <input type="text" class="form-control bg-secondary text-center" value="1">
-                    <div class="input-group-btn">
-                        <button class="btn btn-primary btn-plus">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                    </div>
-                </div>
-                <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+                <input id="quantityInput" type="number" name="quantity" value="1" min="1" max="999" onchange="updateQuantity()">
+
+                <script>
+                    function updateQuantity() {
+                        var quantity = document.getElementById('quantityInput').value;
+                        document.getElementById('hiddenQuantity').value = quantity; // Cập nhật giá trị của trường ẩn
+                    }
+                </script>
+                <form id="addToCartForm" method="POST" action="{{ route('cart.add') }}">
+                    @csrf
+                    <!-- Thêm các trường ẩn để truyền product_id và quantity -->
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <input id="hiddenQuantity" type="hidden" name="quantity" value="1"> <!-- Quantity mặc định là 1 -->
+
+                    <!-- Các trường của biểu mẫu ở đây -->
+
+                    <button class="btn btn-primary px-3" type="submit"><i class="fa fa-shopping-cart mr-1"></i>Thêm vào giỏ hàng</button>
+                </form>
             </div>
+
             <div class="d-flex pt-2">
                 <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
                 <div class="d-inline-flex">
@@ -104,7 +110,7 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 <!-- Shop Detail End -->
 @endsection

@@ -36,7 +36,7 @@
                     @foreach($cart as $key => $item)
                     <tr>
                         <td class="align-middle">
-                            <img src="{{ url($item['img'] ?? 'path/to/default-image.jpg') }}" alt="{{ $item['name'] }}" style="width: 50px;">
+                            <img src="{{ Storage::url($item['img'] ?? 'path/to/default-image.jpg') }}" alt="{{ $item['name'] }}" style="width: 50px;">
                             {{ $item['name'] }}
                         </td>
                         <td class="align-middle">${{ $item['price'] }}</td>

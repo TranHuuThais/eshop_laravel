@@ -33,7 +33,7 @@ class ProductController extends Controller
             $query->orderBy('price', $request->sort);
         }
     
-        $productList = $query->paginate(8);
+        $productList = $query->paginate(6);
         
         return view('Products.index', ['productList' => $productList]);
     }
@@ -77,16 +77,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        // try {
-        //     // return $request->all();
-        //     Product::findOrFail($id)->update($request->all());
-        // } catch (\Throwable $th) {
-        //     dd($th);
-        // }
-    }
-
+   
     /**
      * Remove the specified resource from storage.
      */

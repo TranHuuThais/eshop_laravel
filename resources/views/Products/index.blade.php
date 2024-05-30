@@ -24,8 +24,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="price" id="price0-5" value="0-5" {{ old('price') == '0-5' ? 'checked' : '' }}>
-                                <label class="form-check-label" for="price0-5">$0 - $5</label>
+                                <input class="form-check-input" type="radio" name="price" id="price0-200" value="50-200" {{ old('price') == '50-200' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="price0-5">$50 - $200</label>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -191,7 +191,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                     <div class="card product-item border-0 mb-4">
                         <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                            <img class="img-fluid w-100" src="{{url($Products->img)}}" alt="" />
+                            <img class="img-fluid w-100" src="{{Storage::url($Products->img)}}" alt="" />
                         </div>
                         <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                             <h6 class="text-truncate mb-3">{{($Products->name)}}</h6>
@@ -217,8 +217,10 @@
         <!-- Shop Product End -->
     </div>
     <!-- Pagination links -->
-    <div class="pagination-links">
-        {{ $productList->links() }}
+    <div class="pagination-horizontal">
+        <ul class="pagination-links">
+            {{ $productList->links('pagination::bootstrap-4') }}
+        </ul>
     </div>
 </div>
 <!-- Shop End -->

@@ -97,14 +97,55 @@
                         </div>
                         <a href="{{route('home.contact')}}" class="nav-item nav-link">Contact</a>
                     </div>
-                    <div class="navbar-nav ml-auto py-0">
-                        <a href="" class="nav-item nav-link">Login</a>
-                        <a href="" class="nav-item nav-link">Register</a>
+                    <div class="col-lg-6 text-center text-lg-right">
+                        <div class="d-inline-flex align-items-center">
+                            @if(isset($user))
+                            <div class="btn-group mx-2">
+                                <p class="pt-1">Welcome, {{ $user->name }}! | Your email: {{ $user->email }}</p>
+                            </div>
+                            <div class="btn-group mx-2">
+                                <button type="button" class="btn btn-sm btn-light">
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault();
+                                        this.closest('form').submit();" style="text-decoration: none;">
+                                            <div class="" style="color:black; ">Log Out</div>
+                                        </x-responsive-nav-link>
+                                    </form>
+                                </button>
+                            </div>
+                            @else
+                            <div class="btn-group mx-3">
+                                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <button class="dropdown-item" type="button"> <a href="{{ route('login') }}" style="color:black; text-decoration: none;"> Sign in </a></button>
+                                    <button class="dropdown-item" type="button"><a href="{{ route('register') }}" style="color:black; text-decoration: none;"> Sign up </a></button>
+                                </div>
+                            </div>
+                            @endif
+                            <div class="btn-group mr-2">
+                                <a href=" {{ route('dashboard') }}">
+                                    <button type="button" class="btn btn-sm btn-light ">Profile</button>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div class="d-inline-flex align-items-center d-block d-lg-none">
+                            <a href="" class="btn px-0 ml-2">
+                                <i class="fas fa-heart text-dark"></i>
+                                <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
+                            </a>
+                            <a href="" class="btn px-0 ml-2">
+                                <i class="fas fa-shopping-cart text-dark"></i>
+                                <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </nav>
         </div>
+        </nav>
     </div>
+</div>
 </div>
 <!-- Navbar End -->
 

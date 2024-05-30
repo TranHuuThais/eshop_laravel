@@ -3,93 +3,101 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $productList = Product::all();
-        return view('Admin.products.index', ['productList' => $productList]);
+        $productList = Product::with('category')->paginate(10); // Paginate results
+        return view('admin.products.index', compact('productList'));
     }
 
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        return view('Admin.products.create');
+        $categories = Category::all();
+        return view('admin.products.create', compact('categories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'quantity' => 'required|integer',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $imagePath = $request->file('image')->store('products', 'public');
 
         $product = Product::create([
-            'img' => $request->input('img'), // Ensure 'name' is included
-            'name' => $request->input('name'), // Ensure 'name' is included
-
+            'img' => $imagePath,
+            'name' => $request->input('name'),
             'description' => $request->input('description'),
-
             'price' => $request->input('price'),
             'quantity' => $request->input('quantity'),
+            'category_id' => $request->input('category_id'),
         ]);
 
         $message = $product ? "Successfully created" : "Creation failed";
 
-        return redirect()->route("Admin.products.index", ["id" => $product->id])->with("message", $message);
+        return redirect()->route('Admin.products.index')->with('message', $message);
     }
 
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit($id)
     {
         $product = Product::findOrFail($id);
-        return view('Admin.products.edit', compact('product'));
+        $categories = Category::all();
+        return view('admin.products.edit', compact('product', 'categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $product = Product::findOrFail($id);
-        $boll =   $product->update($request->only(['img', 'name', 'description', 'price', 'quantity']));
-        $Message = "Successfully update message.";
-        if (!$boll) {
-            $Message = "Failed to update message.";
+
+        $request->validate([
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'quantity' => 'required|integer',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+            if ($product->img) {
+                Storage::disk('public')->delete($product->img);
+            }
+            $product->img = $imagePath;
         }
-        return redirect()->route('Admin.products.index')->with(['message' => $Message]);;
+
+        $product->update([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'price' => $request->input('price'),
+            'quantity' => $request->input('quantity'),
+            'category_id' => $request->input('category_id'),
+        ]);
+
+        return redirect()->route('Admin.products.index')->with('message', 'Product updated successfully.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $Message = "Success deleted ";
-        if (!Product::destroy($id)) {
-            $Message = "Failed to delete ";
+        $product = Product::findOrFail($id);
+
+        if ($product->img) {
+            Storage::disk('public')->delete($product->img);
         }
-        return redirect()->route('Admin.products.index')->with(['message' => $Message]);
+
+        $product->delete();
+
+        return redirect()->route('Admin.products.index')->with('message', 'Product deleted successfully.');
     }
 }

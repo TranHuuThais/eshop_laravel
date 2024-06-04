@@ -25,8 +25,12 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
         $users = User::all();
         return view('Admin.orders.create', compact('users'));
     }
@@ -39,6 +43,10 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
         $order = Order::create($request->only([
             'code', 'status', 'user_id'
         ]));
@@ -67,8 +75,13 @@ class OrderController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id,Request $request)
     {
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
+       
         $users = User::all();
         $order = Order::findOrFail($id);
         return view('Admin.orders.edit', compact('order', 'users'));
@@ -83,6 +96,10 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
         $order = Order::findOrFail($id);
         $order->update($request->only([
             'code', 'status', 'user_id'
@@ -102,6 +119,7 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
+       
         $order = Order::destroy($id);
         // dd($user);
         $message = "Delete successfully!";

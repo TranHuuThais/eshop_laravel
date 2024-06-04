@@ -15,7 +15,7 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
     function orderItems(){
-        return $this->hasMany(Order_Items::class);
+        return $this->hasMany(OrderItems::class);
     }
 
 

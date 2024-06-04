@@ -13,6 +13,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        
         $categories = Category::all();
         return view('Admin.categories.index', compact('categories'));
     }
@@ -20,8 +21,12 @@ class CategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
         return view('Admin.categories.create');
     }
 
@@ -30,6 +35,11 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
+
         $request['img'] = '/img/' . $request['img'];
         $category = Category::create($request->only([
             'name', 'description', 'img'
@@ -52,8 +62,12 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id,Request $request)
     {
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
         $category = Category::findOrFail($id);
         return view('Admin.categories.edit', compact('category'));
     }
@@ -63,6 +77,10 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
         $category = Category::findOrFail($id);
         $category->update($request->only([
             'name', 'description'
@@ -78,8 +96,12 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id,Request $request)
     {
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
         $category = Category::findOrFail($id);
         // Kiểm tra xem danh mục có sản phẩm liên kết hay không
         if ($category->products()->count() > 0) {

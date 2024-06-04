@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('code');
             $table->string('status');
+            $table->string('phone', 15)->change();
             // tao khoa ngoai
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index()
     {
         $userList = User::all();
-        return view('Admin.users.index',['userList' => $userList]);
+        return view('Admin.users.index', compact('userList'));
     }
 
     /**
@@ -23,75 +23,66 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view( 'Admin.users.create');
+        // kiểm tra quyền (check permissions)
+        if(Gate::denies('create', User::class)) {
+            return redirect()->back()->with('error', 'Bạn không có quyền tạo người dùng.');
+        }
+        return view('Admin.users.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $user = User::create([
-            'name' => $request->input('name'), // Ensure 'name' is included
-           
-            'email' => $request->input('email'),
+        // check permissions
+        if(Gate::denies('create', User::class)) {
+            return redirect()->back()->with('error', 'Bạn không có quyền tạo người dùng.');
+        }
+        $user = User::create($request->only([
+            'name', 'email', 'password', 'role'
+        ]));
+        $message = "Create success!";
+        if (empty($user))
+            $message = "Create fail!";
 
-            'password' => $request->input('password'),
-            'role' => $request->input('role'),
-        ]);
-    
-        $message = $user ? "Successfully created" : "Creation failed";
-    
-        return redirect()->route("Admin.users.index", ["id" => $user->id])->with("message", $message);
-    }
-    
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        return redirect()->route("Admin.users.index")->with('message', $message);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
-        $user=User::findOrFail($id);
+        // Check permissions
+        $targetUser = User::findOrFail($id);
+        if (Gate::denies('update', [$targetUser])) {
+            return redirect()->back()->with('error', 'Bạn không có quyền edit người dùng.');
+        }
+        $user = User::findOrFail($id);
         return view('Admin.users.edit', compact('user'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $user =User::findOrFail($id);
-     $boll=   $user->update($request->only(['name','email','password']));
-        $Message = "Successfully update message.";
-        if(  !$boll){
-             $Message = "Failed to update message.";
-       
+        $user = User::findOrFail($id);
+    
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+    
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->input('password'));
         }
-        return redirect()->route('Admin.users.index')->with(['message' => $Message]);    ;
+    
+        $user->save();
+    
+        return redirect()->route('Admin.users.index')->with('message', 'User updated successfully!');
     }
+    
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-         $Message = "Success deleted ";
-        if(!User::destroy($id)){
-             $Message = "Failed to delete ";
-       
+        // check permissions
+        $targetUser = User::findOrFail($id);
+        if(Gate::denies('destroy', [$targetUser])) {
+            return redirect()->back()->with('error', 'Bạn không có quyền xóa người dùng.');
         }
-        return redirect()->route('Admin.users.index')->with(['message' => $Message]);    
+        $user = User::findOrFail($id);
+       
+        $user->delete();
+        return redirect()->route("Admin.users.index")->with('message', 'Xoá người dùng thành công!');
     }
-     
-    }
-
-
-
+}

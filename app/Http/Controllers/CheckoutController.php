@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Models\Order_items;
+use App\Models\OrderItems;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,7 +52,7 @@ class CheckoutController extends Controller
                 // Lặp qua các mục trong giỏ hàng và lưu chúng như các mục đơn hàng
                 foreach ($request->session()->get('cart') as $item) {
                     if (is_array($item) && isset($item['product_id'])) {
-                        $orderItem = new Order_items();
+                        $orderItem = new OrderItems();
                         $orderItem->order_id = $orders->id;
                         $orderItem->product_id = $item['product_id'];
                         $orderItem->quantity = $item['quantity'];

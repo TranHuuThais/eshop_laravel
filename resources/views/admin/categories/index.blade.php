@@ -27,7 +27,7 @@
                         @foreach($categories as $category)
                         <tr>
                             <th scope="row"> {{ $loop->index + 1 }}</th>
-                            <td class="text-primary"><img src="{{ url($category->img) }}" alt="" style="width: 150px; height: 150px;"></td>
+                            <td class="text-primary"><img src="{{Storage::url($category->img) }}" alt="" style="width: 150px; height: 150px;"></td>
                             <td class="text-primary">{{ $category->name }}</td>
                             <td class=" text-black text-wrap text-justify text-lowercase">{{$category->description}} <i class="mdi mdi-arrow-down"></i>
                             </td>

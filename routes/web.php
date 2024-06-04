@@ -51,12 +51,12 @@ Route::post('/checkout/place-order', [CheckoutController::class, 'placeOrder'])-
 
 
 
-route::group(['prefix' => 'admin'], function(){
-    route::resource('home', App\Http\Controllers\Admin\HomeController::class, ['names' =>'Admin.home']);
-    route::resource('users', App\Http\Controllers\Admin\UserController::class, ['names' =>'Admin.users']);
-    route::resource('products', App\Http\Controllers\Admin\ProductController::class,['names'=>'Admin.products']);
-    route::resource('orders', App\Http\Controllers\Admin\OrderController::class,['names'=>'Admin.orders']);
-    route::resource('orderItems', App\Http\Controllers\Admin\OrderItemController::class,['names'=>'Admin.orderItems']);
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+    Route::resource('home', App\Http\Controllers\Admin\HomeController::class, ['names' =>'Admin.home']);
+    Route::resource('users', App\Http\Controllers\Admin\UserController::class, ['names' =>'Admin.users']);
+    Route::resource('products', App\Http\Controllers\Admin\ProductController::class,['names'=>'Admin.products']);
+    Route::resource('orders', App\Http\Controllers\Admin\OrderController::class,['names'=>'Admin.orders']);
+    Route::resource('orderItems', App\Http\Controllers\Admin\OrderItemController::class,['names'=>'Admin.orderItems']);
     Route::resource('categories', App\Http\Controllers\admin\CategoryController::class, ['names' => 'Admin.categories']);
 });
 // route::get('/admin', [App\Http\Controllers\Admin\HomeController::class, 'index'])->name('Admin.home');

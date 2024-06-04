@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Models\Order_items;
+use App\Models\OrderItems;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -16,16 +16,19 @@ class OrderItemController extends Controller
     public function index()
     {
         //
-        $orderItems = Order_items::all();
+        $orderItems = OrderItems::all();
         return view('Admin.orderItems.index', compact('orderItems'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
         $products = Product::all();
         $orders = Order::all();
         return view('Admin.orderItems.create', compact('products', 'orders'));
@@ -36,16 +39,19 @@ class OrderItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $orderItem = Order_items::create($request->only([
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
+        
+        $orderItem = OrderItems::create($request->only([
             'product_id', 'order_id', 'quantity', 'price'
         ]));
         $message = "Create success!";
-        if(empty($orderItem))
-        $message = "Create fail!";
-        
-        return redirect()->route("Admin.orderItems.index")->with('message', $message);
+        if (empty($orderItem))
+            $message = "Create fail!";
 
+        return redirect()->route("Admin.orderItems.index")->with('message', $message);
     }
 
     /**
@@ -59,12 +65,15 @@ class OrderItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id,Request $request)
     {
-        //
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
         $products = Product::all();
         $orders = Order::all();
-        $orderItem = Order_items::findOrFail($id);
+        $orderItem = OrderItems::findOrFail($id);
         return view('Admin.orderItems.edit', compact('orderItem', 'products', 'orders'));
     }
 
@@ -73,9 +82,12 @@ class OrderItemController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
-        $orderItem = Order_items::findOrFail($id);
-        $orderItem -> update($request->only([
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
+        $orderItem = OrderItems::findOrFail($id);
+        $orderItem->update($request->only([
             'code', 'status', 'user_id'
         ]));
         $message = "Updated successfully!";
@@ -88,16 +100,18 @@ class OrderItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id,Request $request)
     {
-        //
-        $orderItem = Order_items::destroy($id);
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
+        $orderItem = OrderItems::destroy($id);
         // dd($user);
         $message = "Delete successfully!";
         if ($orderItem === null) {
             $message = "Update failed!";
         }
         return redirect()->route("Admin.orderItems.index")->with('message', $message);
-
     }
 }

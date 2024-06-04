@@ -4,6 +4,11 @@
 @if(session()->has('message'))
 <h3>{{session()->get('message')}}</h3>
 @endif
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
 <div class="row">
     <div class="col-lg3"> <a href="{{route('Admin.users.create')}}" class="btn-default"> Create a New Users</a></div>
 

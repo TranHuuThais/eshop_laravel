@@ -1,6 +1,11 @@
 @extends('admin.layout')
 
 @section('content')
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
 <div class="row">
     <div class="col-lg-6">
         <a href="{{ route('Admin.products.create') }}" class="btn btn-default">Create a New Product</a>
@@ -29,7 +34,7 @@
                         <tr>
                             <td><img src="{{ Storage::url($product->img) }}" alt="" class="img-fluid" style="max-width: 100px;"></td>
                             <td>{{ Str::limit($product->name, 50) }}</td> <!-- Limit name to 50 characters -->
-                            <td>{{ Str::limit($product->description, 100) }}</td> <!-- Limit description to 100 characters -->
+                            <td>{{ Str::limit($product->description, 10) }}</td> <!-- Limit description to 100 characters -->
                             <td>{{ $product->price }}</td>
                             <td>{{ $product->quantity }}</td>
                             <td>{{ optional($product->category)->name }}</td>

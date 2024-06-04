@@ -16,14 +16,24 @@ class ProductController extends Controller
         return view('admin.products.index', compact('productList'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
+        
         $categories = Category::all();
         return view('admin.products.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
+        
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'name' => 'required|string|max:255',
@@ -49,8 +59,13 @@ class ProductController extends Controller
         return redirect()->route('Admin.products.index')->with('message', $message);
     }
 
-    public function edit($id)
+    public function edit($id , Request $request)
     {
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
+       
         $product = Product::findOrFail($id);
         $categories = Category::all();
         return view('admin.products.edit', compact('product', 'categories'));
@@ -58,6 +73,10 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
         $product = Product::findOrFail($id);
 
         $request->validate([
@@ -88,8 +107,12 @@ class ProductController extends Controller
         return redirect()->route('Admin.products.index')->with('message', 'Product updated successfully.');
     }
 
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
+        if ($request->user()->role !== 'admin') {
+            // Nếu không phải admin, chuyển hướng hoặc trả về lỗi
+            return redirect()->back()->with('error', 'Bạn không có quyền truy cập tính năng này.');
+        }
         $product = Product::findOrFail($id);
 
         if ($product->img) {

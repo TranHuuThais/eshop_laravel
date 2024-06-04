@@ -11,6 +11,7 @@ class CategoryController extends ProductController
     /**
      * Display a listing of the resource.
      */
+    
     public function index(Request $request)
     {
         $categoryList = Category::all();

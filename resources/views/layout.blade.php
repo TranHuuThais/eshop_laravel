@@ -38,7 +38,6 @@
     <link href="{{url('css/style.css')}}" rel="stylesheet">
 
 
-
 </head>
 
 <body>
@@ -46,8 +45,7 @@
     @yield('content')
     @include('footer')
 
-
-
+  
 </body>
 
 </html>
